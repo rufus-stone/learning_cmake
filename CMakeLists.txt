@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15...3.19)
 
 # +---------------+
-# | Project setup | 
+# | Project setup |
 # +---------------+
 
 project(
@@ -25,9 +25,8 @@ else()
                                                  -Wold-style-cast -Wpedantic)
 endif()
 
-
 # +--------------+
-# | Dependencies | 
+# | Dependencies |
 # +--------------+
 
 # Conan scripts
@@ -40,12 +39,14 @@ conan_cmake_run(REQUIRES spdlog/1.8.2 BASIC_SETUP CMAKE_TARGETS BUILD missing)
 target_include_directories(${PROJECT_NAME}
                            PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
-# Link libraries to executable
-target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_PKG::spdlog)
+add_subdirectory(libs/xmpl) # find_package() doesn't work unless it's actually
+                            # installed
 
+# Link libraries to executable
+target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_PKG::spdlog xmpl::xmpl)
 
 # +-------+
-# | Tests | 
+# | Tests |
 # +-------+
 
 # Enable testing
